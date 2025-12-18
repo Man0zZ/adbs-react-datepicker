@@ -21,7 +21,14 @@
   "scripts": {
     "dev": "vite",
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "lint": "eslint src --resolve-plugins-relative-to ."
+    "lint": "eslint src --resolve-plugins-relative-to .",
+    "prepare": "husky",
+    "format": "prettier --write ."
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   },
   "peerDependencies": {
     "react": ">=18",
@@ -35,6 +42,9 @@
     "@vitejs/plugin-react": "^5.1.0",
     "eslint": "8",
     "eslint-plugin-react-hooks": "^7.0.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tsup": "^8.5.0",
