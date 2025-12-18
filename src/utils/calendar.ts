@@ -1,7 +1,13 @@
-import { BS_CALENDAR_DATA } from "../const/bsCalendarData";
+import { BS_CALENDAR_DATA } from '../const/bsCalendarData';
 
-const BS_REFERENCE_AD_DATE = new Date("2013-04-14");
-const BS_REFERENCE_YEAR = 2070;
+const BS_REFERENCE_AD_DATE = new Date('1943-04-14');
+const BS_REFERENCE_YEAR = 2000;
+
+export function getBSYearList(): number[] {
+  return Object.keys(BS_CALENDAR_DATA)
+    .map(Number)
+    .sort((a, b) => b - a);
+}
 
 export function adToBs(adDate: Date): {
   year: number;
@@ -9,13 +15,9 @@ export function adToBs(adDate: Date): {
   day: number;
 } {
   const adYear = adDate.getFullYear();
-  if (adYear < 2013 || adYear > 2029) {
-    console.warn("AD date is out of the supported BS conversion range.");
-    return {
-      year: adYear + 57,
-      month: adDate.getMonth() + 1,
-      day: adDate.getDate(),
-    };
+  if (adYear < 1943 || adYear > 2044) {
+    console.warn('AD date is out of supported BS range (2000-2100).');
+    return { year: adYear + 57, month: adDate.getMonth() + 1, day: adDate.getDate() };
   }
 
   const msPerDay = 1000 * 60 * 60 * 24;
@@ -24,16 +26,16 @@ export function adToBs(adDate: Date): {
     BS_REFERENCE_AD_DATE.getMonth(),
     BS_REFERENCE_AD_DATE.getDate()
   );
-  const adUTC = Date.UTC(
-    adDate.getFullYear(),
-    adDate.getMonth(),
-    adDate.getDate()
-  );
+  const adUTC = Date.UTC(adDate.getFullYear(), adDate.getMonth(), adDate.getDate());
   let dayDiff = Math.floor((adUTC - refUTC) / msPerDay);
 
   let bsYear = BS_REFERENCE_YEAR;
   let bsMonth = 1;
   let bsDay = 1;
+
+  if (dayDiff < 0) {
+    return { year: 0, month: 0, day: 0 };
+  }
 
   while (dayDiff > 0) {
     const daysInCurrentBsMonth = BS_CALENDAR_DATA[bsYear][bsMonth - 1];
@@ -53,8 +55,8 @@ export function adToBs(adDate: Date): {
 }
 
 export function bsToAd(bsYear: number, bsMonth: number, bsDay: number): Date {
-  if (bsYear < 2070 || bsYear > 2085) {
-    console.warn("BS date is out of the supported AD conversion range.");
+  if (bsYear < 2000 || bsYear > 2100) {
+    console.warn('BS date is out of range (2000-2100).');
     return new Date(bsYear - 57, bsMonth - 1, bsDay);
   }
 
@@ -69,18 +71,15 @@ export function bsToAd(bsYear: number, bsMonth: number, bsDay: number): Date {
 
   const msPerDay = 1000 * 60 * 60 * 24;
   const refUTCTimestamp = Date.UTC(
-    BS_REFERENCE_AD_DATE.getUTCFullYear(),
-    BS_REFERENCE_AD_DATE.getUTCMonth(),
-    BS_REFERENCE_AD_DATE.getUTCDate()
+    BS_REFERENCE_AD_DATE.getFullYear(),
+    BS_REFERENCE_AD_DATE.getMonth(),
+    BS_REFERENCE_AD_DATE.getDate()
   );
   const newUTCTimestamp = refUTCTimestamp + dayDiff * msPerDay;
   return new Date(newUTCTimestamp);
 }
 
-export const generateADCalendar = (
-  month: number,
-  year: number
-): (number | null)[] => {
+export const generateADCalendar = (month: number, year: number): (number | null)[] => {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const days: (number | null)[] = Array(firstDay).fill(null);
@@ -90,10 +89,7 @@ export const generateADCalendar = (
   return days;
 };
 
-export const generateBSCalendar = (
-  month: number,
-  year: number
-): (number | null)[] => {
+export const generateBSCalendar = (month: number, year: number): (number | null)[] => {
   if (!BS_CALENDAR_DATA[year]) {
     console.error(`BS data for year ${year} not available.`);
     return Array(35).fill(null);

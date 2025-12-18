@@ -1,27 +1,19 @@
-import { useState, useEffect, useLayoutEffect, useMemo } from "react";
-import { CalendarType, CalendarCell } from "../types";
-import {
-  generateADCalendar,
-  generateBSCalendar,
-  bsToAd,
-  adToBs,
-} from "../utils/calendar";
+import { useState, useEffect, useLayoutEffect, useMemo } from 'react';
+import { CalendarType, CalendarCell } from '../types';
+import { generateADCalendar, generateBSCalendar, bsToAd, adToBs } from '../utils/calendar';
 
 /**
  * To detect clicks outside a specific element
  */
-export const useClickOutside = (
-  ref: React.RefObject<HTMLElement>,
-  callback: () => void
-) => {
+export const useClickOutside = (ref: React.RefObject<HTMLElement>, callback: () => void) => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         callback();
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [ref, callback]);
 };
 
@@ -33,7 +25,7 @@ export const usePopupPosition = (
   wrapperRef: React.RefObject<HTMLElement>,
   popupRef: React.RefObject<HTMLElement>
 ) => {
-  const [position, setPosition] = useState<"top" | "bottom">("bottom");
+  const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
 
   useLayoutEffect(() => {
     if (!isOpen || !wrapperRef.current || !popupRef.current) return;
@@ -47,19 +39,19 @@ export const usePopupPosition = (
       const spaceAbove = wrapperRect.top;
 
       if (spaceBelow < popupRect.height && spaceAbove > popupRect.height) {
-        setPosition("top");
+        setPosition('top');
       } else {
-        setPosition("bottom");
+        setPosition('bottom');
       }
     };
 
     updatePosition();
-    window.addEventListener("scroll", updatePosition, true);
-    window.addEventListener("resize", updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    window.addEventListener('resize', updatePosition);
 
     return () => {
-      window.removeEventListener("scroll", updatePosition, true);
-      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener('resize', updatePosition);
     };
   }, [isOpen, wrapperRef, popupRef]);
 
@@ -73,17 +65,19 @@ export const useCalendarCalculation = (
   currentYear: number,
   currentMonth: number,
   calendarType: CalendarType,
-  selectedDate: Date
+  selectedDate: Date,
+  minDate?: Date | null,
+  maxDate?: Date | null
 ) => {
   return useMemo(() => {
     const rawDays =
-      calendarType === "AD"
+      calendarType === 'AD'
         ? generateADCalendar(currentMonth, currentYear)
         : generateBSCalendar(currentMonth, currentYear);
 
-    // Calculate previous month's last day logic...
+    // Calculate previous month's last day logic
     let prevMonthLastDay = 0;
-    if (calendarType === "AD") {
+    if (calendarType === 'AD') {
       prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
     } else {
       const currentMonthStartAD = bsToAd(currentYear, currentMonth + 1, 1);
@@ -98,12 +92,56 @@ export const useCalendarCalculation = (
     const todayBS = adToBs(today);
     const selectedBS = adToBs(selectedDate);
 
-    const processCell = (day: number, isDisabled: boolean): CalendarCell => {
+    /**
+     * Helper to check if a specific day is within min/max range
+     */
+    const isOutOfRange = (day: number, monthIdx: number, year: number) => {
+      const cellDate =
+        calendarType === 'AD' ? new Date(year, monthIdx, day) : bsToAd(year, monthIdx + 1, day);
+
+      // Reset time for comparison
+      const compareDate = new Date(cellDate).setHours(0, 0, 0, 0);
+
+      if (minDate) {
+        const min = new Date(minDate).setHours(0, 0, 0, 0);
+        if (compareDate < min) return true;
+      }
+      if (maxDate) {
+        const max = new Date(maxDate).setHours(0, 0, 0, 0);
+        if (compareDate > max) return true;
+      }
+      return false;
+    };
+
+    const processCell = (
+      day: number,
+      isPadding: boolean,
+      paddingType?: 'prev' | 'next'
+    ): CalendarCell => {
       let isToday = false;
       let isSelected = false;
+      let isDisabled = isPadding;
 
-      if (!isDisabled) {
-        if (calendarType === "AD") {
+      // 1. Calculate the actual month/year for this specific cell (to check range)
+      let cellMonth = currentMonth;
+      let cellYear = currentYear;
+
+      if (paddingType === 'prev') {
+        cellMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+        cellYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+      } else if (paddingType === 'next') {
+        cellMonth = currentMonth === 11 ? 0 : currentMonth + 1;
+        cellYear = currentMonth === 11 ? currentYear + 1 : currentYear;
+      }
+
+      // 2. Check Min/Max constraints
+      if (isOutOfRange(day, cellMonth, cellYear)) {
+        isDisabled = true;
+      }
+
+      // 3. Highlight Today and Selected
+      if (!isPadding) {
+        if (calendarType === 'AD') {
           isToday =
             today.getFullYear() === currentYear &&
             today.getMonth() === currentMonth &&
@@ -129,19 +167,19 @@ export const useCalendarCalculation = (
 
     const processedDays: CalendarCell[] = rawDays.map((day, index) => {
       if (day !== null) return processCell(day, false);
+
       if (index < firstDayIndex) {
-        return processCell(
-          prevMonthLastDay - (firstDayIndex - 1 - index),
-          true
-        );
+        const prevDay = prevMonthLastDay - (firstDayIndex - 1 - index);
+        return processCell(prevDay, true, 'prev');
       }
-      return processCell(nextMonthCounter++, true);
+
+      return processCell(nextMonthCounter++, true, 'next');
     });
 
     const remainingSlots = 7 - (processedDays.length % 7);
     if (remainingSlots < 7) {
       for (let i = 0; i < remainingSlots; i++) {
-        processedDays.push(processCell(nextMonthCounter++, true));
+        processedDays.push(processCell(nextMonthCounter++, true, 'next'));
       }
     }
 
@@ -151,5 +189,5 @@ export const useCalendarCalculation = (
     }
 
     return weeks;
-  }, [currentYear, currentMonth, calendarType, selectedDate]);
+  }, [currentYear, currentMonth, calendarType, selectedDate, minDate, maxDate]);
 };

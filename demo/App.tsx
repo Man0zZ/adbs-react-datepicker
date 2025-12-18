@@ -1,14 +1,34 @@
-import { useState } from "react";
-import Datepicker from "../src/Datepicker";
+import { useState } from 'react';
+import Datepicker from '../src/Datepicker';
+
+type CalendarType = 'AD' | 'BS';
 
 export default function App() {
-  const [date, setDate] = useState("");
-  console.log("Selected date:", date);
+  const [dates, setDates] = useState<Record<CalendarType, string>>({
+    AD: '',
+    BS: '',
+  });
+
+  const handleChange = (calendar: CalendarType) => (value: string) => {
+    setDates((prev) => ({
+      ...prev,
+      [calendar]: value,
+    }));
+  };
 
   return (
-    <div className='flex gap-4'>
-      <Datepicker calendar='AD' onChange={(d) => setDate(d)} />
-      <Datepicker calendar='BS' onChange={(d) => setDate(d)} />
+    <div className="container">
+      <h1>AD/BS Datepicker</h1>
+      <div className="grid-layout w-full">
+        <Datepicker name="ad" calendar="AD" value={dates.AD} onChange={handleChange('AD')} />
+        <Datepicker
+          name="bs"
+          calendar="BS"
+          value={dates.BS}
+          onChange={handleChange('BS')}
+          lang="np"
+        />
+      </div>
     </div>
   );
 }
