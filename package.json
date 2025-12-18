@@ -1,0 +1,44 @@
+{
+  "name": "adbs-react-datepicker",
+  "version": "0.1.0",
+  "description": "AD/BS React Datepicker",
+  "author": "Manoj Shrestha",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "lint": "eslint src --resolve-plugins-relative-to ."
+  },
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.50.0",
+    "@typescript-eslint/parser": "^8.50.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "eslint": "8",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.2"
+  }
+}
