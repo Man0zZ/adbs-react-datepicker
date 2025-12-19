@@ -1,6 +1,7 @@
 import { useState, useEffect, useLayoutEffect, useMemo } from 'react';
 import { CalendarType, CalendarCell } from '../types';
 import { generateADCalendar, generateBSCalendar, bsToAd, adToBs } from '../utils/calendar';
+import { BS_CALENDAR_DATA } from '../const/bsCalendarData';
 
 /**
  * To detect clicks outside a specific element
@@ -75,15 +76,14 @@ export const useCalendarCalculation = (
         ? generateADCalendar(currentMonth, currentYear)
         : generateBSCalendar(currentMonth, currentYear);
 
-    // Calculate previous month's last day logic
     let prevMonthLastDay = 0;
     if (calendarType === 'AD') {
       prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
     } else {
-      const currentMonthStartAD = bsToAd(currentYear, currentMonth + 1, 1);
-      const prevMonthEndAD = new Date(currentMonthStartAD);
-      prevMonthEndAD.setDate(prevMonthEndAD.getDate() - 1);
-      prevMonthLastDay = adToBs(prevMonthEndAD).day;
+      const prevMonth = currentMonth > 0 ? currentMonth - 1 : 11;
+      const prevYear = currentMonth > 0 ? currentYear : currentYear - 1;
+
+      prevMonthLastDay = BS_CALENDAR_DATA[prevYear]?.[prevMonth] ?? 0;
     }
 
     const firstDayIndex = rawDays.findIndex((d) => d !== null);
@@ -99,7 +99,6 @@ export const useCalendarCalculation = (
       const cellDate =
         calendarType === 'AD' ? new Date(year, monthIdx, day) : bsToAd(year, monthIdx + 1, day);
 
-      // Reset time for comparison
       const compareDate = new Date(cellDate).setHours(0, 0, 0, 0);
 
       if (minDate) {
