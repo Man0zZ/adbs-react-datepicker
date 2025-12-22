@@ -25,7 +25,7 @@ export default function App() {
           calendar="AD"
           value={dates.AD}
           onChange={handleChange('AD')}
-          darkMode={true}
+          clearable
         />
         <Datepicker
           name="bs"
@@ -33,6 +33,7 @@ export default function App() {
           value={dates.BS}
           onChange={handleChange('BS')}
           lang="np"
+          clearable
         />
       </div>
     </div>

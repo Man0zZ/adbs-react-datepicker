@@ -10,7 +10,7 @@
 - Fully **TypeScript-ready**.
 - Lightweight and easy to integrate into any React project.
 - Customizable styles via `style.css`.
-- Compatible with **React 18+**.
+- Compatible with **React 16.8+**.
 - Supports tree-shaking with both ESM and CommonJS formats.
 
 ---
@@ -25,8 +25,8 @@ yarn add adbs-react-datepicker
 
 Peer Dependencies
 Make sure you have these installed in your project:
-react >= 18
-react-dom >= 18
+react >= 16.8
+react-dom >= 16.8
 
 ---
 
@@ -47,20 +47,15 @@ const MyComponent = () => {
   return (
     <div className="date-picker-container">
       <h3>AD Datepicker</h3>
-      <Datepicker
-        calendar="AD"
-        value={adDate}
-        onChange={setAdDate}
-        placeholder="Select English Date"
-      />
+      <Datepicker name="ad" calendar="AD" value={dates.AD} onChange={handleChange('AD')} />
 
       <h3>BS Datepicker (Nepali)</h3>
       <Datepicker
+        name="bs"
         calendar="BS"
-        value={bsDate}
-        onChange={setBsDate}
+        value={dates.BS}
+        onChange={handleChange('BS')}
         lang="np"
-        placeholder="मिति छान्नुहोस्"
       />
     </div>
   );
@@ -73,17 +68,19 @@ export default MyComponent;
 
 The `Datepicker` component accepts the following props:
 
-| Prop              | Type                     | Default         | Description                                                               |
-| :---------------- | :----------------------- | :-------------- | :------------------------------------------------------------------------ |
-| **`calendar`**    | `'AD' \| 'BS'`           | `'AD'`          | Determines the calendar system used.                                      |
-| **`value`**       | `string`                 | `undefined`     | The selected date value (Format: `YYYY-MM-DD`).                           |
-| **`onChange`**    | `(date: string) => void` | `-`             | Callback function triggered when a date is selected. Returns date string. |
-| **`lang`**        | `'en' \| 'np'`           | `'en'`          | Language for the UI. `'np'` renders Nepali numerals and month names.      |
-| **`placeholder`** | `string`                 | `"Select date"` | Placeholder text displayed when no date is selected.                      |
-| **`className`**   | `string`                 | `''`            | Custom CSS class for the input wrapper.                                   |
-| **`name`**        | `string`                 | `-`             | Name attribute for the input field.                                       |
-| **`min`**         | `string`                 | `-`             | Minimum selectable date.                                                  |
-| **`max`**         | `string`                 | `-`             | Maximum selectable date.                                                  |
+| Prop              | Type                     | Default         | Description                                                          |
+| :---------------- | :----------------------- | :-------------- | :------------------------------------------------------------------- |
+| **`calendar`**    | `'AD' \| 'BS'`           | `'AD'`          | Determines the calendar system used.                                 |
+| **`value`**       | `string`                 | `undefined`     | The selected date value (Format: `YYYY-MM-DD`).                      |
+| **`onChange`**    | `(date: string) => void` | `-`             | Callback triggered when a date is selected or cleared.               |
+| **`lang`**        | `'en' \| 'np'`           | `'en'`          | Language for the UI. `'np'` renders Nepali numerals and month names. |
+| **`placeholder`** | `string`                 | `"Select date"` | Placeholder text displayed when no date is selected.                 |
+| **`className`**   | `string`                 | `''`            | Custom CSS class for the input wrapper.                              |
+| **`name`**        | `string`                 | `-`             | Name attribute for the input field.                                  |
+| **`min`**         | `string`                 | `-`             | Minimum selectable date (`YYYY-MM-DD`).                              |
+| **`max`**         | `string`                 | `-`             | Maximum selectable date (`YYYY-MM-DD`).                              |
+| **`darkMode`**    | `boolean`                | `false`         | Enables dark mode styling for input, calendar popup, and controls.   |
+| **`clearable`**   | `boolean`                | `false`         | Shows a clear button to reset the selected date (`onChange('')`).    |
 
 ## Localization (`lang`)
 

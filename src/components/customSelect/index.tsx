@@ -13,6 +13,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   onClick,
   name,
   lang = 'en',
+  clearable = false,
   onClear,
 }) => {
   const [open, setOpen] = useState(false);
@@ -43,7 +44,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           onClick={onClick}
         />
 
-        {value && !disabled && (
+        {value && !disabled && clearable && (
           <button
             type="button"
             onClick={(e) => {

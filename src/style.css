@@ -1,5 +1,4 @@
 :root {
-  /* Brand */
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
   --color-secondary: #64748b;
@@ -30,12 +29,6 @@
   --color-blue-700: #1d4ed8;
   --color-blue-800: #1e40af;
   --color-blue-900: #1e3a8a;
-
-  /* Status */
-  --color-success: #16a34a;
-  --color-warning: #f59e0b;
-  --color-error: #dc2626;
-  --color-info: #0ea5e9;
 
   /* Backgrounds */
   --bg-body: var(--color-gray-50);
@@ -91,16 +84,6 @@
   color: var(--color-gray-300);
 }
 
-body {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  overflow: hidden;
-  font-family: NotoSans, sans-serif;
-  color: var(--text-primary);
-}
-
 .flex {
   display: flex;
 }
@@ -129,9 +112,65 @@ body {
   margin-right: -0.375rem;
 }
 
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: NotoSans, sans-serif;
+  color: var(--text-primary);
+}
+
 h1 {
   color: var(--text-secondary);
   margin: 0;
+}
+
+li {
+  list-style: none;
+}
+
+.toggle-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 0.625rem;
+  font-size: 0.875rem;
+  background: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.arrow-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+
+  & svg {
+    color: var(--color-gray-400);
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: var(--color-gray-600);
+    }
+  }
+}
+
+.clear-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 2.3rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-gray-400);
+  padding: 0;
 }
 
 .grid-layout {
@@ -195,17 +234,6 @@ table {
   }
 }
 
-.toggle-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 0.625rem;
-  font-size: 0.875rem;
-  background: var(--color-secondary);
-  color: var(--color-white);
-}
-
 .calendar-table {
   width: 100%;
   border-collapse: collapse;
@@ -263,26 +291,6 @@ table {
     height: 6px;
     width: 6px;
   }
-}
-
-.arrow-btn {
-  background: none;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-
-  & svg {
-    color: var(--color-gray-400);
-    transition: all 0.2s ease;
-
-    &:hover {
-      color: var(--color-gray-600);
-    }
-  }
-}
-
-.rotate-180 {
-  transform: rotate(180deg);
 }
 
 .calendar-cell.disabled {
@@ -380,27 +388,12 @@ table {
   }
 }
 
-li {
-  list-style: none;
-}
-
 .custom-calendar {
   border: 1px solid var(--color-gray-400);
   border-radius: 4px;
   padding: 0.25rem 3.5rem 0.25rem 0.5rem;
   height: 30px;
   width: 100%;
-}
-
-.clear-btn {
-  position: absolute;
-  top: 0.75rem;
-  right: 2.3rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-gray-400);
-  padding: 0;
 }
 
 .custom-calendar:focus-visible {

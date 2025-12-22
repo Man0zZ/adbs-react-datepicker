@@ -18,6 +18,7 @@ const Datepicker: React.FC<DatepickerProps> = ({
   name,
   lang = 'en',
   darkMode = false,
+  clearable,
 }) => {
   /* ------------------ Initial setup ------------------ */
   const today = new Date();
@@ -125,6 +126,7 @@ const Datepicker: React.FC<DatepickerProps> = ({
         value={localizedValue}
         className={className}
         lang={lang}
+        clearable={clearable}
       />
 
       {showCalendar && (

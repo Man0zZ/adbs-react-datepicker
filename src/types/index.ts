@@ -20,6 +20,7 @@ export interface DatepickerProps {
   name?: string;
   lang?: 'en' | 'np';
   darkMode?: boolean;
+  clearable?: boolean;
 }
 
 export interface SelectOption {
@@ -39,4 +40,5 @@ export interface CustomSelectProps {
   name?: string;
   lang?: 'en' | 'np';
   onClear?: () => void;
+  clearable?: boolean;
 }
