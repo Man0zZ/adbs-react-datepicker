@@ -19,6 +19,7 @@ export interface DatepickerProps {
   max?: string;
   name?: string;
   lang?: 'en' | 'np';
+  darkMode?: boolean;
 }
 
 export interface SelectOption {
@@ -37,4 +38,5 @@ export interface CustomSelectProps {
   onClick?: () => void;
   name?: string;
   lang?: 'en' | 'np';
+  onClear?: () => void;
 }

@@ -13,6 +13,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   onClick,
   name,
   lang = 'en',
+  onClear,
 }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -41,7 +42,34 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           className={`custom-calendar ${className}`}
           onClick={onClick}
         />
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+
+        {value && !disabled && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClear?.();
+            }}
+            className="clear-btn"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+          </button>
+        )}
+
+        <svg
+          className="calendar-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path d="M9 1v2h6V1h2v2h4a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4V1zm11 10H4v8h16zM7 5H4v4h16V5h-3v2h-2V5H9v2H7z" />
         </svg>
       </div>
@@ -77,7 +105,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           {options.map((option) => (
             <li
               key={option.value}
-              className={`option ${option.value === value ? 'selected' : ''}`}
+              className={`option ${option.value === value ? 'active' : ''}`}
               onClick={() => {
                 onChange(option.value);
                 setOpen(false);

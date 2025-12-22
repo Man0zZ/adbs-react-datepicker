@@ -17,6 +17,7 @@ const Datepicker: React.FC<DatepickerProps> = ({
   max,
   name,
   lang = 'en',
+  darkMode = false,
 }) => {
   /* ------------------ Initial setup ------------------ */
   const today = new Date();
@@ -105,12 +106,21 @@ const Datepicker: React.FC<DatepickerProps> = ({
     setCurrentYear(year);
   };
 
+  const handleClear = () => {
+    setHasSelected(false);
+    const resetDate = new Date();
+    setSelectedDate(resetDate);
+
+    onChange?.('');
+  };
+
   return (
-    <div className="wrapper" ref={wrapperRef}>
+    <div className={`wrapper ${darkMode ? 'dark' : ''}`} ref={wrapperRef}>
       <CustomSelect
         name={name}
         type="calendar"
         onClick={() => setShowCalendar((s) => !s)}
+        onClear={handleClear}
         placeholder={placeholderText}
         value={localizedValue}
         className={className}

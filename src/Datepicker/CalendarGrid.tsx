@@ -44,7 +44,7 @@ const CalendarGrid: React.FC<Props> = ({ weeks, calendarType, onSelect, lang = '
               <td
                 key={j}
                 className={`calendar-cell 
-                  ${cell.isSelected ? 'selected' : ''} 
+                  ${cell.isSelected ? 'active' : ''} 
                   ${cell.isToday ? 'today' : ''} 
                   ${cell.isDisabled ? 'disabled' : ''}`}
                 onClick={() => onSelect(cell)}

@@ -20,7 +20,13 @@ export default function App() {
     <div className="container">
       <h1>AD/BS Datepicker</h1>
       <div className="grid-layout w-full">
-        <Datepicker name="ad" calendar="AD" value={dates.AD} onChange={handleChange('AD')} />
+        <Datepicker
+          name="ad"
+          calendar="AD"
+          value={dates.AD}
+          onChange={handleChange('AD')}
+          darkMode={true}
+        />
         <Datepicker
           name="bs"
           calendar="BS"
