@@ -4,6 +4,8 @@
   "description": "AD/BS React Datepicker",
   "author": "Manoj Shrestha",
   "license": "MIT",
+  "repository": "https://github.com/Man0zZ/adbs-react-datepicker",
+  "homepage": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -30,6 +32,20 @@
       "prettier --write"
     ]
   },
+  "keywords": [
+    "datepicker",
+    "calendar",
+    "react datepicker",
+    "nepali-calendar",
+    "nepali datepicker",
+    "react nepali datepicker",
+    "bs",
+    "ad",
+    "bs to ad",
+    "ad to bs",
+    "nepali calendar react",
+    "react calendar"
+  ],
   "peerDependencies": {
     "react": ">=16.8",
     "react-dom": ">=16.8"
