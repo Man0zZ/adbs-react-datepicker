@@ -13,8 +13,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js"
     },
     "./style.css": "./dist/style.css"
   },
