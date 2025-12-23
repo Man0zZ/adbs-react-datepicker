@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
+  base: '/adbs-react-datepicker/',
   plugins: [
     react(),
     dts({
